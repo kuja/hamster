@@ -1,0 +1,22 @@
+{
+  "name": "hamster",
+  "version": "0.0.1",
+  "description": "EVE Online API client for Node.js",
+  "keywords": ["hamster", "hamster eve", "eve online api", "eve api", "eve online", "eve"],
+  "homepage": "https://github.com/kuja/hamster",
+  "author": {
+    "name": "Matt Harris",
+    "email": "kuja@byteflux.net",
+    "url": "https://github.com/kuja"
+  },
+  "main": "./lib/hamster.js",
+  "dependencies": {
+    "sax": "0.4.x"
+  },
+  "devDependencies": {
+    "mocha": "1.3.x"
+  },
+  "scripts": {
+    "test": "mocha -u qunit -R spec -t 5000 --recursive"
+  }
+}
