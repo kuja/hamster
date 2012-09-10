@@ -131,6 +131,19 @@ test('#parse() can parse nested rowsets', function (done) {
   })
 })
 
+test('#parse() can parse error response', function (done){
+  var client = new Client()
+
+  fs.readFile(__dirname + '/error.xml', function (err, xml) {
+    client.parse(xml, function (err, result) {
+      assert.ok(err instanceof Error)
+      assert.equal(err.message, 'Must provide userID or keyID parameter for authentication.')
+      assert.equal(err.code, 106)
+      done()
+    })
+  })
+})
+
 test('#parse() can parse streams', function (done) {
   var client = new Client()
     , stream = fs.createReadStream(__dirname + '/simple.xml', {bufferSize: 128})
