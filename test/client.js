@@ -205,6 +205,7 @@ test('#fetch() only parses OK responses (status code == 200)', function (done) {
   server.listen(1338)
 
   client.fetch('server:ServerStatus', function (err, result) {
+    assert.ok(err instanceof Error)
     server.close()
     done()
   })
