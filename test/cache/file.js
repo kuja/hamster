@@ -19,7 +19,7 @@ test('#getFilePath() prepends prefix to file name', function () {
 test('#read() retrieves value from cache', function (done) {
   var cache = new FileCache({prefix: 'test1_'})
 
-  cache.store('herp', 'derp', 5, function (err) {
+  cache.write('herp', 'derp', 5, function (err) {
     assert.ok(!err)
 
     cache.read('herp', function (err, value) {
@@ -37,21 +37,24 @@ test('#read() retrieves value from cache', function (done) {
 
 test('#read() passes undefined for expired entry', function (done) {
   var cache = new FileCache({prefix: 'test2_'})
+    , duration = 5
 
-  cache.store('herp', 'derp', 3, function (err) {
+  cache.write('herp', 'derp', duration, function (err) {
     assert.ok(!err)
 
     cache.read('herp', function (err, value) {
       assert.ok(!err)
       assert.equal(value, 'derp')
 
-      setTimeout(function () {
-        cache.read('herp', function (err, value) {
-          assert.ok(!err)
-          assert.ok(typeof value === 'undefined')
-          done()
-        })
-      }, 1500)
+      cache.getCurrentTime = function () {
+        return (new Date()).getTime() + duration
+      }
+
+      cache.read('herp', function (err, value) {
+        assert.ok(!err)
+        assert.ok(typeof value === 'undefined')
+        done()
+      })
     })
   })
 })
