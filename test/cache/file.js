@@ -8,13 +8,13 @@ suite('hamster.cache.FileCache')
 test('#getFilePath() returns path to cache entry', function () {
   var cache = new FileCache({path: '/tmp'})
 
-  assert.equal(cache.getFilePath('herp'), '/tmp/herp')
+  assert.equal(cache.getFilePath('herp'), '/tmp/dc/bc/dcbc8f63b06c899b9db957f0e03466860fce8056')
 })
 
 test('#getFilePath() prepends prefix to file name', function () {
   var cache = new FileCache({path: '/tmp', prefix: 'herp-'})
 
-  assert.equal(cache.getFilePath('derp'), '/tmp/herp-derp')
+  assert.equal(cache.getFilePath('derp'), '/tmp/e0/57/herp-e057d4ea363fbab414a874371da253dba3d713bc')
 })
 
 test('#makeDirs() recursively creates directories', function (done) {
