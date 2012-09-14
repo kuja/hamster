@@ -1,4 +1,4 @@
-# hamster.js
+# hamster.js [![](https://secure.travis-ci.org/kuja/hamster.png)](http://travis-ci.org/#!/kuja/hamster)
 **An asynchronous EVE Online API client for Node.js**
 
 
