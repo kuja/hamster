@@ -1,7 +1,6 @@
 var assert = require('assert')
   , url = require('url')
   , fs = require('fs')
-  , crypto = require('crypto')
   , http = require('http')
   , Client = require(__dirname + '/../lib/client')
 
@@ -55,20 +54,17 @@ test('#getRequestUrl() returns URL object', function () {
   assert.equal(actual, expected)
 })
 
-test('#getCacheKey() returns SHA-1 hash of URL object', function () {
+test('#getCacheKey() returns URL string', function () {
   var client = new Client()
     , actual
     , expected
-    , hash
 
-  hash = crypto.createHash('sha1')
   actual = client.getCacheKey(client.getRequestUrl('server:ServerStatus'))
-  expected = hash.update('https://api.eveonline.com/server/ServerStatus.xml.aspx').digest('hex')
+  expected = 'https://api.eveonline.com/server/ServerStatus.xml.aspx'
   assert.equal(actual, expected)
 
-  hash = crypto.createHash('sha1')
   actual = client.getCacheKey(client.getRequestUrl('char:AccountBalance', {characterID: '12345'}))
-  expected = hash.update('https://api.eveonline.com/char/AccountBalance.xml.aspx?characterID=12345').digest('hex')
+  expected = 'https://api.eveonline.com/char/AccountBalance.xml.aspx?characterID=12345'
   assert.equal(actual, expected)
 })
 
@@ -76,16 +72,13 @@ test('#getCacheKey() sorts query string parameters alphebetically', function () 
   var client = new Client()
     , actual
     , expected
-    , hash
 
-  hash = crypto.createHash('sha1')
   actual = client.getCacheKey(client.getRequestUrl('foo:bar', {c: 'c', a: 'a', b: 'b'}))
-  expected = hash.update('https://api.eveonline.com/foo/bar.xml.aspx?a=a&b=b&c=c').digest('hex')
+  expected = 'https://api.eveonline.com/foo/bar.xml.aspx?a=a&b=b&c=c'
   assert.equal(actual, expected)
 
-  hash = crypto.createHash('sha1')
   actual = client.getCacheKey(client.getRequestUrl('foo:bar', {b: 'b', c: 'c', a: 'a'}))
-  expected = hash.update('https://api.eveonline.com/foo/bar.xml.aspx?a=a&b=b&c=c').digest('hex')
+  expected = 'https://api.eveonline.com/foo/bar.xml.aspx?a=a&b=b&c=c'
   assert.equal(actual, expected)
 })
 
@@ -95,7 +88,7 @@ test('#parse() can parse simple API response', function (done) {
   fs.readFile(__dirname + '/simple.xml', function (err, xml) {
     fs.readFile(__dirname + '/simple.json', function (err, json) {
       client.parse(xml, function (err, result) {
-        assert.ok(!err)
+        assert.ifError(err)
         assert.deepEqual(result, JSON.parse(json))
         done()
       })
@@ -109,7 +102,7 @@ test('#parse() can parse rowsets', function (done) {
   fs.readFile(__dirname + '/rowset.xml', function (err, xml) {
     fs.readFile(__dirname + '/rowset.json', function (err, json) {
       client.parse(xml, function (err, result) {
-        assert.ok(!err)
+        assert.ifError(err)
         assert.deepEqual(result, JSON.parse(json))
         done()
       })
@@ -123,7 +116,7 @@ test('#parse() can parse nested rowsets', function (done) {
   fs.readFile(__dirname + '/alliance-list.xml', function (err, xml) {
     fs.readFile(__dirname + '/alliance-list.json', function (err, json) {
       client.parse(xml, function (err, result) {
-        assert.ok(!err)
+        assert.ifError(err)
         assert.deepEqual(result, JSON.parse(json))
         done()
       })
@@ -137,7 +130,7 @@ test('#parse() can parse mutli-keyed rowsets', function (done) {
   fs.readFile(__dirname + '/multi-key.xml', function (err, xml) {
     fs.readFile(__dirname + '/multi-key.json', function (err, json) {
       client.parse(xml, function (err, result) {
-        assert.ok(!err)
+        assert.ifError(err)
         assert.deepEqual(result, JSON.parse(json))
         done()
       })
@@ -163,7 +156,7 @@ test('#parse() can parse streams', function (done) {
     , stream = fs.createReadStream(__dirname + '/simple.xml', {bufferSize: 128})
 
   client.parse(stream, function (err, result) {
-    assert.ok(!err)
+    assert.ifError(err)
     done()
   })
 })
@@ -185,7 +178,7 @@ test('#fetch() can request and parse API response', function (done) {
 
   fs.readFile(__dirname + '/server-status.json', function (err, json) {
     client.fetch('server:ServerStatus', function (err, result) {
-      assert.ok(!err)
+      assert.ifError(err)
       assert.deepEqual(result, JSON.parse(json))
       server.close()
       done()
