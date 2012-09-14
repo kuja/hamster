@@ -7,14 +7,14 @@ test('#read() retrieves value from cache', function (done) {
   var cache = new MemoryCache()
 
   cache.write('herp', 'derp', 5, function (err) {
-    assert.ok(!err)
+    assert.ifError(err)
 
     cache.read('herp', function (err, value) {
-      assert.ok(!err)
+      assert.ifError(err)
       assert.equal(value, 'derp')
 
       cache.read('herp', function (err, value) {
-        assert.ok(!err)
+        assert.ifError(err)
         assert.equal(value, 'derp')
         done()
       })
@@ -27,10 +27,10 @@ test('#read() passes undefined for expired entry', function (done) {
     , duration = 5
 
   cache.write('herp', 'derp', duration, function (err) {
-    assert.ok(!err)
+    assert.ifError(err)
 
     cache.read('herp', function (err, value) {
-      assert.ok(!err)
+      assert.ifError(err)
       assert.equal(value, 'derp')
 
       cache.getCurrentTime = function () {
@@ -38,7 +38,7 @@ test('#read() passes undefined for expired entry', function (done) {
       }
 
       cache.read('herp', function (err, value) {
-        assert.ok(!err)
+        assert.ifError(err)
         assert.ok(typeof value === 'undefined')
         done()
       })
