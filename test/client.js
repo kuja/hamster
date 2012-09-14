@@ -54,6 +54,18 @@ test('#getRequestUrl() returns URL object', function () {
   assert.equal(actual, expected)
 })
 
+test('#getRequestUrl() merges default params', function () {
+  var client = new Client()
+    , actual
+    , expected
+
+  client.setParams({keyID: 'herp', vCode: 'derp'})
+
+  actual = url.format(client.getRequestUrl('char:AccountBalance', {characterID: '1234'}))
+  expected = 'https://api.eveonline.com/char/AccountBalance.xml.aspx?characterID=1234&keyID=herp&vCode=derp'
+  assert.equal(actual, expected)
+})
+
 test('#getCacheKey() returns URL string', function () {
   var client = new Client()
     , actual
