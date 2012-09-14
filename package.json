@@ -17,6 +17,6 @@
     "mocha": "1.3.x"
   },
   "scripts": {
-    "test": "mocha -u qunit -R spec --recursive"
+    "test": "mocha -u qunit --recursive"
   }
 }
