@@ -2,17 +2,31 @@
 **An asynchronous EVE Online API client for Node.js**
 
 
-### Example
+### Examples
 
 ```javascript
 var hamster = require('hamster')
 
+// Print a list of skill groups
 hamster.fetch('eve:SkillTree', function (err, result) {
   if (err) throw err
 
   for (var groupID in result.skillGroups) {
     console.log(result.skillGroups[groupID].groupName)
   }
+})
+
+// Set default parameters (useful for setting keyID and vCode)
+hamster.setParams({
+  keyID: '1234567',
+  vCode: 'some random vcode'
+})
+
+// Default parameters will get merged with the parameters passed into fetch().
+// The actual request will include all three parameters: keyID, vCode and characterID
+hamster.fetch('char:AccountBalance', {characterID: 12345}, function (err, result) {
+  if (err) throw err
+  // do stuff
 })
 ```
 
